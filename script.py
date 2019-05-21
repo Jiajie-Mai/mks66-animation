@@ -20,8 +20,20 @@ from draw import *
   ==================== """
 def first_pass( commands ):
 
-    name = ''
+    name = 'default'
     num_frames = 1
+
+    for command in commands:
+        if command['op'] == 'frames':
+            num_frames = command['args'][0]
+        if command['op'] == 'basename':
+            name = command['args']['0']
+        if command['op'] == 'vary':
+            if num_frames <= 1:
+                quit()
+
+    if name == 'default':
+        print("No basename was found, so 'default' is currently being used instead.")
 
     return (name, num_frames)
 
