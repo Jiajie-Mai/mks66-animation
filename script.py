@@ -56,6 +56,14 @@ def first_pass( commands ):
   ===================="""
 def second_pass( commands, num_frames ):
     frames = [ {} for i in range(num_frames) ]
+    # args = commands["args"]
+    # frameDifference = args[2] - args[1]
+    # difference = args[4] - args[3]
+    #
+    # for command in commands:
+    #     if command['op'] == 'vary':
+    #         for x in range(frameDifference):
+    #             frames[x + args[1]] =
 
     return frames
 
