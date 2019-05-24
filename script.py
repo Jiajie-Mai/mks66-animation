@@ -114,6 +114,11 @@ def run(filename):
     (name, num_frames) = first_pass(commands)
     frames = second_pass(commands, num_frames)
 
+    i = 0
+
+    for frame in frames:
+        for key in frame:
+            symbols[key] = frame[key]
 
     tmp = new_matrix()
     ident( tmp )
@@ -168,26 +173,35 @@ def run(filename):
             draw_lines(tmp, screen, zbuffer, color)
             tmp = []
         elif c == 'move':
+            if command['knob']:
+                knob = symbols[command['knob']]
             tmp = make_translate(args[0], args[1], args[2])
             matrix_mult(stack[-1], tmp)
             stack[-1] = [x[:] for x in tmp]
             tmp = []
+            knob = 1
         elif c == 'scale':
+            if command['knob']:
+                knob = symbols[command['knob']]
             tmp = make_scale(args[0], args[1], args[2])
             matrix_mult(stack[-1], tmp)
             stack[-1] = [x[:] for x in tmp]
             tmp = []
+            knob = 1
         elif c == 'rotate':
+            if command['knob']:
+                knob = symbols[command['knob']]
             theta = args[1] * (math.pi/180)
             if args[0] == 'x':
-                tmp = make_rotX(theta)
+                tmp = make_rotX(theta * knob)
             elif args[0] == 'y':
-                tmp = make_rotY(theta)
+                tmp = make_rotY(theta * knob)
             else:
-                tmp = make_rotZ(theta)
+                tmp = make_rotZ(theta * knob)
             matrix_mult( stack[-1], tmp )
             stack[-1] = [ x[:] for x in tmp]
             tmp = []
+            knob = 1
         elif c == 'push':
             stack.append([x[:] for x in stack[-1]] )
         elif c == 'pop':
@@ -197,3 +211,9 @@ def run(filename):
         elif c == 'save':
             save_extension(screen, args[0])
         # end operation loop
+    if num_frames > 1:
+        i += 1
+        #print("saving\n")
+        save_extension(screen, "./anim/" + name + "%03d"%i)
+        #print("saved\n")
+    make_animation(name)
