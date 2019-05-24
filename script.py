@@ -27,14 +27,14 @@ def first_pass( commands ):
 
     for command in commands:
         if command['op'] == 'frames':
-            num_frames = command['args'][0]
+            num_frames = int(command['args'][0])
             frames = True
         if command['op'] == 'basename':
-            name = command['args']['0']
+            name = command['args'][0]
         if command['op'] == 'vary':
             vary = True
 
-    if vary not frames:
+    if vary and not frames:
         print("Vary was found but not frames, so the program is being stopped.")
         exit(1)
     if name == 'default':
@@ -61,20 +61,23 @@ def first_pass( commands ):
   ===================="""
 def second_pass( commands, num_frames ):
     frames = [ {} for i in range(num_frames) ]
-    args = commands["args"]
-    op = command['op']
 
     for command in commands:
+        args = command['args']
+        op = command['op']
         if op == 'vary':
             if args[0] >= args[1] or args[0] < 0 or args[1] > num_frames:
                 print("Error, bad starting and/or ending frames.")
-            # step =
-            # i
-            # for x in range(args[0], args[1] + 1):
-            #     frames[x][command['knob']] =
+            startFrame = int(args[0])
+            endFrame = int(args[1])
+            step = (args[3] - args[2]) / (endFrame - startFrame)
+            V = args[2]
+            for x in range(startFrame, endFrame + 1):
+                frames[x][command['knob']] = V
+                V += step
 
     return frames
-nece
+
 
 def run(filename):
     """
