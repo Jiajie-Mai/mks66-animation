@@ -1,0 +1,16 @@
+frames 24
+basename animation
+push
+move 250 250 0
+scale 2 2 2 bigenator
+sphere 0 0 0 100
+vary bigenator 0 5 0 1
+vary bigenator 6 11 1 0
+vary bigenator 12 17 0 1
+vary bigenator 18 24 1 0
+pop
+move 250 250 0
+torus 0 0 0 75 125
+rotate y 360 spinny
+vary spinny 0 11 0 1
+vary spinny 12 24 1 0
